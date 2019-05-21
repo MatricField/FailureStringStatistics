@@ -40,22 +40,22 @@ namespace Demo
 
         protected override double AdjuestSuccessRate(long failureCount)
         {
-            if (failureCount < FailureThreshold)
-            {
-                return DefaultRate;
-            }
-            else
-            {
-                var adjustment = Step * (failureCount - FailureThreshold);
-                return Math.Min(DefaultRate + adjustment, 1.0);
-            }
-            //return DefaultRate;
+            //if (failureCount < FailureThreshold)
+            //{
+            //    return DefaultRate;
+            //}
+            //else
+            //{
+            //    var adjustment = Step * (failureCount - FailureThreshold);
+            //    return Math.Min(DefaultRate + adjustment, 1.0);
+            //}
+            return DefaultRate;
         }
     }
     class Program
     {
-        const int ThreadCount = 6;
-        const long TestCount = 50000000;
+        const int ThreadCount = 7;
+        const long TestCount = 14_000_000_000;
         static async Task Main(string[] args)
         {
             var tasks = new List<Task>();
@@ -70,6 +70,7 @@ namespace Demo
             for(int i = 0; i < ThreadCount; ++i)
             {
                 tasks.Add(sim.RunSimulation(source.Token));
+                await Task.Delay(50);
             }
             for(; ; )
             {
@@ -86,7 +87,7 @@ namespace Demo
                 }
 
                 Console.WriteLine(
-                    $"Count:{count}, Mean: {mean}±{stddev}, Min:{min}, Max:{max}");
+                    $"Count:{count:##,#}, Mean: {mean}±{stddev}, Min:{min}, Max:{max}");
 
                 if(count >= TestCount)
                 {

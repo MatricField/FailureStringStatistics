@@ -71,6 +71,7 @@ namespace FStrStat.Core
                 {
                     token.ThrowIfCancellationRequested();
                     ReportFailureStringLength(GetNextFailureStringLength());
+                    test = testFactory();
                 }
             }
 
